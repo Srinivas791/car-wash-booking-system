@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaSpark 3D - Luxury Doorstep Car Wash & Detailing India</title>
+  
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for UI -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon">✨</div>
+        <div>
+          <span class="brand-name">AquaSpark 3D</span>
+          <span class="brand-badge">🇮🇳 INDIA</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#stage3d" class="nav-link active"><i class="fa-solid fa-cube"></i> 3D Studio</a></li>
+        <li><a href="#booking-section" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Book Wash</a></li>
+        <li><a href="#tracker-section" class="nav-link"><i class="fa-solid fa-route"></i> Live Tracker</a></li>
+        <li><a href="#reviews-section" class="nav-link"><i class="fa-solid fa-star"></i> Reviews</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="btn-sound-toggle" class="btn-sound-toggle" title="Toggle Sound FX">
+          <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+          <span id="sound-label">Audio ON</span>
+        </button>
+        <a href="#booking-section" class="btn-cta-nav">
+          <i class="fa-solid fa-bolt"></i> Book Now
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section & 3D Interactive Stage -->
+  <section class="hero-section" id="stage3d">
+    <div class="hero-header">
+      <div class="hero-pill">
+        <i class="fa-solid fa-certificate"></i> India's Premier 3D Interactive Doorstep Car Spa
+      </div>
+      <h1 class="hero-title">
+        Experience The Future of <span class="highlight">Car Washing in 3D</span>
+      </h1>
+      <p class="hero-subtitle">
+        Inspect your car in real-time 3D, simulate snow foam & ceramic wash stages, and book eco-friendly doorstep detailing anywhere in India.
+      </p>
+    </div>
+
+    <!-- 3D Viewport Container -->
+    <div class="stage-3d-wrapper">
+      <div id="car3d-canvas"></div>
+
+      <!-- 3D Overlays & Controls -->
+      <div class="stage-overlay">
+        <!-- Top row: Vehicle switcher & Camera angles -->
+        <div class="overlay-top">
+          <!-- Car Type Selector -->
+          <div class="car-type-selector">
+            <button class="car-type-btn" data-type="hatchback">
+              <i class="fa-solid fa-car-side"></i> Hatchback
+            </button>
+            <button class="car-type-btn active" data-type="sedan">
+              <i class="fa-solid fa-car"></i> Sedan
+            </button>
+            <button class="car-type-btn" data-type="suv">
+              <i class="fa-solid fa-truck-pickup"></i> SUV
+            </button>
+            <button class="car-type-btn" data-type="luxury">
+              <i class="fa-solid fa-gem"></i> Luxury
+            </button>
+          </div>
+
+          <!-- Camera Angles -->
+          <div class="camera-controls">
+            <button class="cam-btn active" data-cam="iso" title="Isometric Angle">Iso</button>
+            <button class="cam-btn" data-cam="front" title="Front View">Front</button>
+            <button class="cam-btn" data-cam="side" title="Side Profile">Side</button>
+            <button class="cam-btn" data-cam="wheel" title="Wheel Detail">Wheel</button>
+            <button class="cam-btn" data-cam="top" title="Top Down">Top</button>
+          </div>
+        </div>
+
+        <!-- Side floating palette (Paint & Mud slider) -->
+        <div class="overlay-side">
+          <div class="glass-floating-card">
+            <div class="floating-card-title">
+              <span>Car Color</span>
+              <i class="fa-solid fa-palette"></i>
+            </div>
+            <div class="color-palette-grid">
+              <!-- Royal Blue -->
+              <button class="color-dot-btn active" data-color="0x0070f3" style="background: #0070f3;" title="Royal Blue"></button>
+              <!-- Pearl Arctic White -->
+              <button class="color-dot-btn" data-color="0xf8fafc" style="background: #f8fafc;" title="Pearl Arctic White"></button>
+              <!-- Magma Grey -->
+              <button class="color-dot-btn" data-color="0x475569" style="background: #475569;" title="Magma Grey"></button>
+              <!-- Phoenix Red -->
+              <button class="color-dot-btn" data-color="0xdc2626" style="background: #dc2626;" title="Phoenix Red"></button>
+              <!-- Midnight Obsidian Black -->
+              <button class="color-dot-btn" data-color="0x0f172a" style="background: #0f172a;" title="Midnight Obsidian"></button>
+              <!-- Golden Saffron -->
+              <button class="color-dot-btn" data-color="0xf59e0b" style="background: #f59e0b;" title="Sunset Gold"></button>
+            </div>
+          </div>
+
+          <div class="glass-floating-card">
+            <div class="floating-card-title">
+              <span>Road Dirt Level</span>
+              <i class="fa-solid fa-cloud-sun"></i>
+            </div>
+            <div class="dirt-slider-container">
+              <input type="range" min="0" max="100" value="65" class="dirt-slider" id="dirt-slider">
+              <div class="dirt-labels">
+                <span>Spotless</span>
+                <span>Muddy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Wash Simulation Toolbar -->
+        <div class="overlay-bottom">
+          <div class="stage-wash-toolbar">
+            <button class="wash-step-btn" data-stage="water">
+              <i class="fa-solid fa-shower"></i> 1. Water Jet
+            </button>
+            <button class="wash-step-btn" data-stage="foam">
+              <i class="fa-solid fa-soap"></i> 2. Snow Foam
+            </button>
+            <button class="wash-step-btn" data-stage="scrub">
+              <i class="fa-solid fa-brush"></i> 3. Microfiber Scrub
+            </button>
+            <button class="wash-step-btn" data-stage="dry">
+              <i class="fa-solid fa-wind"></i> 4. Hot Air Dry
+            </button>
+            <button class="wash-step-btn" data-stage="polish">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> 5. Ceramic Gloss
+            </button>
+            <button class="btn-auto-wash" id="btn-auto-wash">
+              <i class="fa-solid fa-play"></i> Full Auto Wash
+            </button>
+          </div>
+          <div class="canvas-hint">
+            <i class="fa-solid fa-arrows-up-down-left-right"></i> Drag to rotate 360° • Scroll to zoom • Select wash stage to test
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Stats Bar -->
+  <section class="stats-banner">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fa-solid fa-car-rear"></i></div>
+        <div>
+          <div class="stat-number">50,000+</div>
+          <div class="stat-label">Cars Washed Across India</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+        <div>
+          <div class="stat-number">4.92 / 5</div>
+          <div class="stat-label">Verified Customer Rating</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fa-solid fa-leaf"></i></div>
+        <div>
+          <div class="stat-number">80% Water</div>
+          <div class="stat-label">Saved with High-Pressure Tech</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fa-solid fa-truck-fast"></i></div>
+        <div>
+          <div class="stat-number">30 Mins</div>
+          <div class="stat-label">Doorstep Mobile Van Arrival</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Booking Studio Section -->
+  <section class="booking-section" id="booking-section">
+    <div class="section-head">
+      <span class="section-badge">Fast & Easy Booking</span>
+      <h2 class="section-title">Schedule Your Car Wash in India</h2>
+      <p class="section-desc">
+        Pick your car type, select your tailored spa package, and receive instant confirmation alert sent to <strong>annavarapusrinivas791@gmail.com</strong> and WhatsApp/SMS to <strong>9346898662</strong>.
+      </p>
+    </div>
+
+    <div class="booking-container-grid">
+      <!-- Left: Multi-step Options -->
+      <div class="booking-steps-panel">
+        
+        <!-- Step 1: Vehicle Category -->
+        <div class="booking-card-step">
+          <div class="step-header">
+            <div class="step-num">1</div>
+            <div>
+              <h3 class="step-title">Select Vehicle Category</h3>
+              <p class="step-subtitle">Prices calibrate dynamically to your vehicle size</p>
+            </div>
+          </div>
+          <div class="vehicle-grid">
+            <div class="vehicle-option-card" data-vehicle="hatchback">
+              <div class="v-icon">🚗</div>
+              <div class="v-title">Hatchback</div>
+              <div class="v-examples">Swift, i20, Tiago</div>
+              <div class="v-price-multiplier">Standard Rate</div>
+            </div>
+            <div class="vehicle-option-card selected" data-vehicle="sedan">
+              <div class="v-icon">🚘</div>
+              <div class="v-title">Sedan</div>
+              <div class="v-examples">City, Verna, Dzire</div>
+              <div class="v-price-multiplier">+25% Class Rate</div>
+            </div>
+            <div class="vehicle-option-card" data-vehicle="suv">
+              <div class="v-icon">🚙</div>
+              <div class="v-title">SUV / CUV</div>
+              <div class="v-examples">Creta, Thar, Brezza</div>
+              <div class="v-price-multiplier">+50% Heavy Duty</div>
+            </div>
+            <div class="vehicle-option-card" data-vehicle="luxury">
+              <div class="v-icon">🏎️</div>
+              <div class="v-title">Luxury</div>
+              <div class="v-examples">BMW, Audi, Mercedes</div>
+              <div class="v-price-multiplier">Exotic Detailing</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Wash Package -->
+        <div class="booking-card-step">
+          <div class="step-header">
+            <div class="step-num">2</div>
+            <div>
+              <h3 class="step-title">Choose Detailing Package</h3>
+              <p class="step-subtitle">100% scratch-free wash with pH-neutral active foam</p>
+            </div>
+          </div>
+          <div class="packages-grid">
+            
+            <!-- Package 1: Express -->
+            <div class="package-card" data-package="express">
+              <div>
+                <div class="pkg-header">
+                  <h4 class="pkg-name">Hydro Express Clean</h4>
+                  <span class="pkg-duration"><i class="fa-regular fa-clock"></i> 35m</span>
+                </div>
+                <div class="pkg-price">₹399 <span class="original">₹599</span></div>
+                <ul class="pkg-features">
+                  <li><span class="check">✓</span> High-Pressure Exterior Water Rinse</li>
+                  <li><span class="check">✓</span> pH-Neutral Snow Foam Bath</li>
+                  <li><span class="check">✓</span> Rim & Tire Cleanse + Dressing</li>
+                  <li><span class="check">✓</span> Streak-Free Glass Polish</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Package 2: Deep Foam (Popular) -->
+            <div class="package-card selected" data-package="deep">
+              <span class="package-badge-popular">⭐ Most Popular</span>
+              <div>
+                <div class="pkg-header">
+                  <h4 class="pkg-name">Deep Foam & Interior Spa</h4>
+                  <span class="pkg-duration"><i class="fa-regular fa-clock"></i> 65m</span>
+                </div>
+                <div class="pkg-price">₹699 <span class="original">₹1,099</span></div>
+                <ul class="pkg-features">
+                  <li><span class="check">✓</span> Everything in Hydro Express</li>
+                  <li><span class="check">✓</span> Deep Cabin & Trunk Vacuuming</li>
+                  <li><span class="check">✓</span> Dashboard & Plastic Trim Polish</li>
+                  <li><span class="check">✓</span> Underbody Chassis Pressure Wash</li>
+                  <li><span class="check">✓</span> AC Vent Deodorization</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Package 3: Pro Ceramic -->
+            <div class="package-card" data-package="pro">
+              <div>
+                <div class="pkg-header">
+                  <h4 class="pkg-name">Pro Ceramic & Engine Spa</h4>
+                  <span class="pkg-duration"><i class="fa-regular fa-clock"></i> 95m</span>
+                </div>
+                <div class="pkg-price">₹1,299 <span class="original">₹1,899</span></div>
+                <ul class="pkg-features">
+                  <li><span class="check">✓</span> Everything in Deep Interior Spa</li>
+                  <li><span class="check">✓</span> Engine Bay Degreasing & Dressing</li>
+                  <li><span class="check">✓</span> 30-Day Hydrophobic Ceramic Wax</li>
+                  <li><span class="check">✓</span> Leather Seat Nourishing Cream</li>
+                  <li><span class="check">✓</span> Alloy De-ironizing & Caliper Shine</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Package 4: Diamond 9H -->
+            <div class="package-card" data-package="diamond">
+              <div>
+                <div class="pkg-header">
+                  <h4 class="pkg-name">Ultra Diamond 9H Detailing</h4>
+                  <span class="pkg-duration"><i class="fa-regular fa-clock"></i> 150m</span>
+                </div>
+                <div class="pkg-price">₹2,499 <span class="original">₹3,999</span></div>
+                <ul class="pkg-features">
+                  <li><span class="check">✓</span> Complete Showroom Concours Spa</li>
+                  <li><span class="check">✓</span> Clay Bar Surface Decontamination</li>
+                  <li><span class="check">✓</span> Machine Glaze Swirl Correction</li>
+                  <li><span class="check">✓</span> 9H Nano-Shield Protective Coat</li>
+                  <li><span class="check">✓</span> Rain-X Windshield Treatment</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Step 3: Add-on Protection -->
+        <div class="booking-card-step">
+          <div class="step-header">
+            <div class="step-num">3</div>
+            <div>
+              <h3 class="step-title">Optional Add-On Treatments</h3>
+              <p class="step-subtitle">Specialized enhancements for Indian driving conditions</p>
+            </div>
+          </div>
+          <div class="addons-grid">
+            <div class="addon-checkbox-card" data-addon="rain_repellent">
+              <div class="addon-info">
+                <span class="addon-icon">🌧️</span>
+                <div>
+                  <div class="addon-name">Rain-X Windshield Repellent</div>
+                  <div style="font-size: 0.72rem; color: #64748b;">Monsoon clarity & water beading</div>
+                </div>
+              </div>
+              <div class="addon-price">+₹199</div>
+            </div>
+
+            <div class="addon-checkbox-card" data-addon="underbody_rust">
+              <div class="addon-info">
+                <span class="addon-icon">🛡️</span>
+                <div>
+                  <div class="addon-name">Underbody Anti-Rust Coating</div>
+                  <div style="font-size: 0.72rem; color: #64748b;">Protection against road salt & slush</div>
+                </div>
+              </div>
+              <div class="addon-price">+₹399</div>
+            </div>
+
+            <div class="addon-checkbox-card" data-addon="ac_sanitization">
+              <div class="addon-info">
+                <span class="addon-icon">❄️</span>
+                <div>
+                  <div class="addon-name">AC Vent Deep Steam Sanitization</div>
+                  <div style="font-size: 0.72rem; color: #64748b;">Eliminates 99.9% bacteria & mold</div>
+                </div>
+              </div>
+              <div class="addon-price">+₹249</div>
+            </div>
+
+            <div class="addon-checkbox-card" data-addon="engine_dressing">
+              <div class="addon-info">
+                <span class="addon-icon">⚙️</span>
+                <div>
+                  <div class="addon-name">Engine Bay Polish & Degreasing</div>
+                  <div style="font-size: 0.72rem; color: #64748b;">Dust-resistant engine bay coat</div>
+                </div>
+              </div>
+              <div class="addon-price">+₹299</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Schedule & Location -->
+        <div class="booking-card-step">
+          <div class="step-header">
+            <div class="step-num">4</div>
+            <div>
+              <h3 class="step-title">Schedule & Service Location</h3>
+              <p class="step-subtitle">Doorstep mobile van brings all water and power</p>
+            </div>
+          </div>
+
+          <div class="service-mode-toggle">
+            <button class="mode-btn active" data-mode="doorstep">
+              <i class="fa-solid fa-van-shuttle"></i> Doorstep Mobile Van (Recommended)
+            </button>
+            <button class="mode-btn" data-mode="station">
+              <i class="fa-solid fa-warehouse"></i> Visit Detailing Studio
+            </button>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="booking-city"><i class="fa-solid fa-city"></i> Indian City</label>
+              <select class="form-select" id="booking-city">
+                <option value="Hyderabad" selected>Hyderabad (Telangana)</option>
+                <option value="Bengaluru">Bengaluru (Karnataka)</option>
+                <option value="Mumbai">Mumbai (Maharashtra)</option>
+                <option value="Delhi NCR">Delhi NCR / Gurgaon / Noida</option>
+                <option value="Chennai">Chennai (Tamil Nadu)</option>
+                <option value="Pune">Pune (Maharashtra)</option>
+                <option value="Kolkata">Kolkata (West Bengal)</option>
+                <option value="Ahmedabad">Ahmedabad (Gujarat)</option>
+                <option value="Visakhapatnam">Visakhapatnam (Andhra Pradesh)</option>
+                <option value="Vijayawada">Vijayawada (Andhra Pradesh)</option>
+                <option value="Jaipur">Jaipur (Rajasthan)</option>
+                <option value="Chandigarh">Chandigarh (Punjab/Haryana)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="booking-date"><i class="fa-solid fa-calendar"></i> Service Date</label>
+              <input type="date" class="form-input" id="booking-date">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="booking-slot"><i class="fa-solid fa-clock"></i> Time Slot</label>
+              <select class="form-select" id="booking-slot">
+                <option value="08:00 AM - 09:30 AM">08:00 AM - 09:30 AM (Early Bird)</option>
+                <option value="10:00 AM - 11:30 AM" selected>10:00 AM - 11:30 AM (Morning Slot)</option>
+                <option value="12:00 PM - 01:30 PM">12:00 PM - 01:30 PM (Noon)</option>
+                <option value="02:30 PM - 04:00 PM">02:30 PM - 04:00 PM (Afternoon)</option>
+                <option value="04:30 PM - 06:00 PM">04:30 PM - 06:00 PM (Evening)</option>
+                <option value="06:30 PM - 08:00 PM">06:30 PM - 08:00 PM (Late Evening)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="user-pincode"><i class="fa-solid fa-location-dot"></i> Pincode</label>
+              <input type="text" class="form-input" id="user-pincode" placeholder="e.g. 500081 or 560001" value="500081">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="user-address"><i class="fa-solid fa-house"></i> Full Doorstep Address / Landmark</label>
+            <input type="text" class="form-input" id="user-address" placeholder="Flat No., Apartment, Street, Landmark" value="Flat 402, Royal Residency, Madhapur">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Sticky Order Summary & Booking Action -->
+      <aside class="checkout-sticky-panel">
+        <div class="checkout-title">
+          <span>Booking Summary</span>
+          <span class="tag-live">● LIVE PRICE</span>
+        </div>
+
+        <div class="summary-car-preview">
+          <div class="preview-thumb">🚘</div>
+          <div class="preview-details">
+            <h4 id="summary-vehicle-name">Sedan</h4>
+            <p id="summary-vehicle-models">(City, Verna, Dzire, Slavia)</p>
+          </div>
+        </div>
+
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span>Selected Package:</span>
+            <strong id="summary-package-name" style="color: #fff;">Deep Foam & Interior Spa</strong>
+          </div>
+          <div class="summary-row">
+            <span>Package Rate:</span>
+            <span id="summary-package-price" style="color: #fff;">₹874</span>
+          </div>
+          <div class="summary-row">
+            <span>Add-on Treatments:</span>
+            <span id="summary-addons-price" style="color: #fff;">₹0</span>
+          </div>
+          <div class="summary-row">
+            <span>Doorstep Mobile Van:</span>
+            <span id="summary-service-mode" style="color: #10b981;">FREE Promotion</span>
+          </div>
+          <div class="summary-row total">
+            <span>Grand Total:</span>
+            <span class="total-price" id="summary-grand-total">₹874</span>
+          </div>
+        </div>
+
+        <!-- User Contact Inputs -->
+        <div class="user-contact-fields">
+          <div class="form-group">
+            <label class="form-label" for="user-fullname"><i class="fa-solid fa-user"></i> Your Full Name</label>
+            <input type="text" class="form-input" id="user-fullname" placeholder="Enter full name" value="Srinivas Annavarapu">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="user-phone"><i class="fa-solid fa-phone"></i> Mobile Number (+91)</label>
+            <input type="tel" class="form-input" id="user-phone" placeholder="Enter 10-digit mobile number" value="9346898662">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="payment-mode"><i class="fa-solid fa-credit-card"></i> Payment Preference</label>
+            <select class="form-select" id="payment-mode">
+              <option value="UPI (Google Pay / PhonePe / Paytm)" selected>UPI (GPay / PhonePe / Paytm / BHIM)</option>
+              <option value="Cash on Delivery (Doorstep COD)">Cash on Delivery (Pay after Wash)</option>
+              <option value="RuPay / Credit / Debit Card">Credit / Debit Card (RuPay / Visa)</option>
+              <option value="Net Banking">Net Banking (SBI / HDFC / ICICI)</option>
+            </select>
+          </div>
+
+          <!-- Highlight of Notification Dispatch Destination -->
+          <div class="contact-highlight-notice">
+            <i class="fa-solid fa-paper-plane"></i> <strong>Instant Alert Dispatch:</strong> On clicking confirm, booking details will be dispatched immediately to:
+            <br>• <strong>annavarapusrinivas791@gmail.com</strong>
+            <br>• <strong>+91 9346898662</strong>
+          </div>
+        </div>
+
+        <!-- Big Confirmation CTA Button -->
+        <button class="btn-confirm-booking" id="btn-confirm-booking">
+          <i class="fa-solid fa-circle-check"></i> CONFIRM 3D CAR WASH
+        </button>
+
+        <div class="checkout-guarantee">
+          <i class="fa-solid fa-shield-halved"></i> 100% Satisfaction Guarantee • Pay after inspection
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Live Booking Tracker Section -->
+  <section class="tracker-section" id="tracker-section">
+    <div class="section-head">
+      <span class="section-badge">Real-Time Progress</span>
+      <h2 class="section-title">Track Your Doorstep Wash Van</h2>
+      <p class="section-desc">Track your mobile detailing van from dispatch to final showroom gleam.</p>
+    </div>
+
+    <div class="tracker-card">
+      <div class="tracker-search-bar">
+        <input type="text" class="tracker-input" id="tracker-booking-id" placeholder="Enter Booking ID (e.g. IND-CW-839210)">
+        <button class="btn-track" id="btn-track-booking">
+          <i class="fa-solid fa-magnifying-glass"></i> Track Wash
+        </button>
+      </div>
+
+      <!-- Timeline visual -->
+      <div class="timeline-steps">
+        <div class="timeline-progress-bar" id="tracker-progress-fill"></div>
+
+        <div class="timeline-step completed" id="step-booked">
+          <div class="timeline-dot"><i class="fa-solid fa-check"></i></div>
+          <div class="timeline-step-name">Booked & Alerted</div>
+          <div class="timeline-step-desc">Alert sent to email & phone</div>
+        </div>
+
+        <div class="timeline-step active" id="step-assigned">
+          <div class="timeline-dot"><i class="fa-solid fa-truck"></i></div>
+          <div class="timeline-step-name">Van En Route</div>
+          <div class="timeline-step-desc">Mobile unit dispatched</div>
+        </div>
+
+        <div class="timeline-step" id="step-washing">
+          <div class="timeline-dot"><i class="fa-solid fa-soap"></i></div>
+          <div class="timeline-step-name">3D Foam Wash</div>
+          <div class="timeline-step-desc">Doorstep spa in progress</div>
+        </div>
+
+        <div class="timeline-step" id="step-done">
+          <div class="timeline-dot"><i class="fa-solid fa-sparkles"></i></div>
+          <div class="timeline-step-name">Sparkle Delivered</div>
+          <div class="timeline-step-desc">Showroom finish verified</div>
+        </div>
+      </div>
+
+      <div id="tracker-result-area"></div>
+    </div>
+  </section>
+
+  <!-- Reviews / Testimonials -->
+  <section class="reviews-section" id="reviews-section">
+    <div class="section-head">
+      <span class="section-badge">Verified Indian Car Owners</span>
+      <h2 class="section-title">What Our Customers Say</h2>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "The 3D preview on the website is mind-blowing! I booked the Deep Foam Spa for my Honda City in Hyderabad. The mobile van arrived right on time with its own water generator. Flawless doorstep experience!"
+          </p>
+        </div>
+        <div class="review-user">
+          <div class="user-avatar">VK</div>
+          <div class="user-meta">
+            <h5>Vikram K.</h5>
+            <span>Honda City • Hyderabad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "Getting notification right to WhatsApp and email with all details made it super smooth. The technician Ramesh did ceramic waxing on my Thar in Bengaluru. It sparkles like it just left the showroom."
+          </p>
+        </div>
+        <div class="review-user">
+          <div class="user-avatar">RS</div>
+          <div class="user-meta">
+            <h5>Rahul Sharma</h5>
+            <span>Mahindra Thar • Bengaluru</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "Very affordable and professional. Saved me 3 hours of waiting at a local car wash in Mumbai traffic. Will book every fortnight!"
+          </p>
+        </div>
+        <div class="review-user">
+          <div class="user-avatar">PM</div>
+          <div class="user-meta">
+            <h5>Pooja Mehta</h5>
+            <span>Hyundai Creta • Mumbai</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <a href="#" class="brand-logo" style="margin-bottom: 1rem;">
+          <div class="logo-icon">✨</div>
+          <span class="brand-name">AquaSpark 3D</span>
+        </a>
+        <p>
+          India's high-tech 3D car wash & doorstep detailing service. Operating across Hyderabad, Bengaluru, Mumbai, Delhi NCR, Chennai, Pune and all major Indian cities.
+        </p>
+        <p style="margin-top: 0.85rem; color: #38bdf8;">
+          <i class="fa-solid fa-headset"></i> 24x7 Customer Helpline: +91 9346898662
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Wash Packages</h4>
+        <ul class="footer-links">
+          <li><a href="#booking-section">Hydro Express Clean (₹399)</a></li>
+          <li><a href="#booking-section">Deep Foam & Interior Spa (₹699)</a></li>
+          <li><a href="#booking-section">Pro Ceramic & Engine Spa (₹1,299)</a></li>
+          <li><a href="#booking-section">Ultra Diamond 9H Detailing (₹2,499)</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Indian Metros</h4>
+        <ul class="footer-links">
+          <li><a href="#">Hyderabad & Secunderabad</a></li>
+          <li><a href="#">Bengaluru Urban & Rural</a></li>
+          <li><a href="#">Mumbai & Thane & Navi Mumbai</a></li>
+          <li><a href="#">Delhi NCR, Gurgaon, Noida</a></li>
+          <li><a href="#">Chennai & Coimbatore</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Admin & Notifications</h4>
+        <p style="font-size: 0.82rem; margin-bottom: 0.5rem;">
+          All client booking requests are automatically dispatched to:
+        </p>
+        <p style="font-size: 0.84rem; color: #00d2ff; word-break: break-all;">
+          <i class="fa-solid fa-envelope"></i> annavarapusrinivas791@gmail.com
+        </p>
+        <p style="font-size: 0.84rem; color: #10b981; margin-top: 0.35rem;">
+          <i class="fa-solid fa-phone"></i> +91 9346898662
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 AquaSpark 3D Car Wash India. All rights reserved.</div>
+      <div>Designed for Srinivas Annavarapu • Powered by Three.js & WebGL</div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       POPUP CONFIRMATION MODAL (Dispatched Alert & Details)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="success-modal-backdrop">
+    <div class="booking-success-modal">
+      <button class="modal-close-btn" id="modal-close-btn" title="Close Modal">&times;</button>
+
+      <div class="modal-header-badge">
+        <div class="success-animated-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="modal-title">Booking Confirmed!</h3>
+        <div class="modal-booking-id" id="modal-booking-id-val">IND-CW-2026-94821</div>
+      </div>
+
+      <!-- DISPATCHED NOTIFICATION TARGET BANNER -->
+      <div class="notification-dispatch-banner">
+        <div class="dispatch-banner-title">
+          <i class="fa-solid fa-satellite-dish"></i> Notification Dispatched Successfully
+        </div>
+        <div class="dispatch-cards-grid">
+          <div class="dispatch-card">
+            <div class="d-icon" style="color: #38bdf8;"><i class="fa-solid fa-envelope-circle-check"></i></div>
+            <div class="d-info">
+              <span class="d-label">Email Dispatched To</span>
+              <span class="d-value" id="modal-target-email-val">annavarapusrinivas791@gmail.com</span>
+              <span class="d-status"><i class="fa-solid fa-circle-check"></i> Dispatched via Instant Mail</span>
+            </div>
+          </div>
+
+          <div class="dispatch-card">
+            <div class="d-icon" style="color: #25d366;"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <div class="d-info">
+              <span class="d-label">Mobile Alert Sent To</span>
+              <span class="d-value" id="modal-target-mobile-val">+91 9346898662</span>
+              <span class="d-status"><i class="fa-solid fa-circle-check"></i> SMS & WhatsApp Triggered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Itemized Details -->
+      <div class="modal-details-box">
+        <div class="modal-details-grid">
+          <div class="detail-row">
+            <span class="detail-k">Customer</span>
+            <span class="detail-v" id="modal-customer-name">Srinivas (9346898662)</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-k">Vehicle Type</span>
+            <span class="detail-v" id="modal-vehicle-val">Sedan</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-k">Wash Package</span>
+            <span class="detail-v" id="modal-pkg-val">Deep Foam & Interior Spa</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-k">Add-on Treatments</span>
+            <span class="detail-v" id="modal-addons-val">None</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-k">Scheduled Slot</span>
+            <span class="detail-v" id="modal-schedule-val">Tomorrow • 10:00 AM</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-k">Total Amount</span>
+            <span class="detail-v" style="color: #00d2ff; font-size: 1.05rem;" id="modal-total-val">₹874</span>
+          </div>
+          <div class="detail-row" style="grid-column: span 2;">
+            <span class="detail-k">Service Location</span>
+            <span class="detail-v" id="modal-loc-val">Madhapur, Hyderabad</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="modal-actions-container">
+        <!-- Direct 1-Click WhatsApp -->
+        <a href="#" target="_blank" class="btn-whatsapp-direct" id="modal-whatsapp-btn">
+          <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i>
+          <span>Open Direct WhatsApp Message to 9346898662</span>
+        </a>
+
+        <!-- Direct 1-Click Email -->
+        <a href="#" class="btn-email-direct" id="modal-email-btn">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Send / Open Email to annavarapusrinivas791@gmail.com</span>
+        </a>
+
+        <div class="modal-secondary-buttons">
+          <button class="btn-modal-secondary" id="modal-print-btn">
+            <i class="fa-solid fa-print"></i> Print Invoice Slip
+          </button>
+          <button class="btn-modal-secondary" id="modal-track-btn">
+            <i class="fa-solid fa-location-crosshairs"></i> Track Live Status
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Three.js (r128) & OrbitControls from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/sound.js"></script>
+  <script src="js/car3d.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="js/notification.js"></script>
+  <script src="js/tracker.js"></script>
+
+  <!-- Main Initialization & Controller Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize 3D Car Wash Studio
+      try {
+        window.carStudio = new CarWashStudio('car3d-canvas');
+      } catch (err) {
+        console.error('Error initializing 3D studio:', err);
+      }
+
+      // 2. Sound Toggle Button
+      const soundBtn = document.getElementById('btn-sound-toggle');
+      const soundIcon = document.getElementById('sound-icon');
+      const soundLabel = document.getElementById('sound-label');
+
+      if (soundBtn && window.soundSystem) {
+        soundBtn.addEventListener('click', () => {
+          const isMuted = window.soundSystem.toggleMute();
+          if (isMuted) {
+            soundIcon.className = 'fa-solid fa-volume-xmark';
+            soundLabel.textContent = 'Audio OFF';
+            soundBtn.style.opacity = '0.6';
+          } else {
+            soundIcon.className = 'fa-solid fa-volume-high';
+            soundLabel.textContent = 'Audio ON';
+            soundBtn.style.opacity = '1';
+            window.soundSystem.playClick();
+          }
+        });
+      }
+
+      // 3. 3D Car Type Selector Buttons
+      document.querySelectorAll('.car-type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.car-type-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const type = btn.dataset.type;
+          if (window.bookingEngine) {
+            window.bookingEngine.setVehicle(type);
+          }
+        });
+      });
+
+      // 4. Camera Angle Buttons
+      document.querySelectorAll('.cam-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.cam-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cam = btn.dataset.cam;
+          if (window.carStudio) {
+            window.carStudio.setCameraAngle(cam);
+          }
+          if (window.soundSystem) window.soundSystem.playClick();
+        });
+      });
+
+      // 5. Paint Color Palette Buttons
+      document.querySelectorAll('.color-dot-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.color-dot-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const hex = parseInt(btn.dataset.color, 16);
+          if (window.carStudio) {
+            window.carStudio.setCarPaint(hex);
+          }
+          if (window.soundSystem) window.soundSystem.playClick();
+        });
+      });
+
+      // 6. Dirt Level Slider
+      const dirtSlider = document.getElementById('dirt-slider');
+      if (dirtSlider) {
+        dirtSlider.addEventListener('input', (e) => {
+          const val = parseFloat(e.target.value) / 100;
+          if (window.carStudio) {
+            window.carStudio.setDirtLevel(val);
+          }
+        });
+      }
+
+      // 7. Wash Step Buttons
+      document.querySelectorAll('.wash-step-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.wash-step-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const stage = btn.dataset.stage;
+          if (window.carStudio) {
+            window.carStudio.setWashStage(stage);
+          }
+        });
+      });
+
+      // 8. Full Auto Wash Button
+      const autoWashBtn = document.getElementById('btn-auto-wash');
+      if (autoWashBtn) {
+        autoWashBtn.addEventListener('click', () => {
+          if (!window.carStudio) return;
+          autoWashBtn.disabled = true;
+          autoWashBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Washing...';
+
+          window.carStudio.startAutoWash(
+            (stage, step, total) => {
+              document.querySelectorAll('.wash-step-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.stage === stage);
+              });
+              if (dirtSlider) {
+                dirtSlider.value = Math.max(0, 100 - step * 20);
+              }
+            },
+            () => {
+              autoWashBtn.disabled = false;
+              autoWashBtn.innerHTML = '<i class="fa-solid fa-play"></i> Full Auto Wash';
+              if (dirtSlider) dirtSlider.value = 0;
+              document.querySelectorAll('.wash-step-btn').forEach(b => b.classList.remove('active'));
+              if (window.notificationManager) {
+                window.notificationManager.showToast('✨ 3D Showroom Wash Cycle Complete!', 'success');
+              }
+            }
+          );
+        });
+      }
+    });
+  </script>
+</body>
+</html>
